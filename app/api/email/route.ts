@@ -1,41 +1,18 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { sql } from '@vercel/postgres';
+// Import the Redis library to interact with a Redis database
+import { Redis } from '@upstash/redis';
+import { NextResponse } from 'next/server';
 
-// Define the response structure
-interface ApiResponse {
-  message?: string;
-  data?: any;
-  error?: string;
-}
+// Initialize a connection to Redis
+const redis = Redis.fromEnv(); // Set up Redis using environment settings
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ApiResponse>
-): Promise<void> {
-    console.log("WORKS")
-    const { email } = req.body;
-    console.log(email)
+// Define a function called POST to handle incoming POST requests
+export const POST = async (request: Request) => {
+  // Read the information sent by the user and assign it to the variable called email
+  const email = await request.json();
 
-    // Validate email input
-    if (!email || typeof email !== 'string') {
-      res.status(400).json({ error: 'Invalid email address' });
-      return;
-    }
+  // Add the new email to the beginning of the "emails" list in Redis
+  const result = await redis.lpush("emails", email);
 
-    try {
-      // Insert the email into the 'subscribers' table
-      const result = await sql`
-        INSERT INTO subscribers (email)
-        VALUES (${email})
-        RETURNING *;
-      `;
-
-      res.status(200).json({
-        message: 'Email successfully added',
-        data: result.rows,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Failed to save email to database' });
-    }
-}
+  // Return a response to the client with the result of the operation
+  return new NextResponse(JSON.stringify({ result }), { status: 200 });
+};

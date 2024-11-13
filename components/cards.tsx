@@ -25,7 +25,7 @@ const cards = [
             {
                 cards.map((card, index) => {
             return(
-                <div className="border-4 border-black mt-6">
+                <div className="border-4 border-black mx-auto mt-6 text-center">
                     <h3 className="text-xl font-bold w-fit mx-auto">{card.title}</h3> 
                         <div className="w-fit mx-auto my-5">
                             {
@@ -34,7 +34,7 @@ const cards = [
                         </div>
                    
                     <h3>{card.title}</h3>
-                    <p>
+                    <p className="text-center">
                         {card.description}
                     </p>
                 </div>

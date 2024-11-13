@@ -25,21 +25,15 @@ const cards = [
             {
                 cards.map((card, index) => {
             return(
-                <div className="border-4 border-black ">
+                <div className="border-4 border-black mt-6">
                     <h3 className="text-xl font-bold w-fit mx-auto">{card.title}</h3> 
-                    {
                         <div className="w-fit mx-auto my-5">
                             {
                                 card.icon
                             }
                         </div>
-                    }
-                    
-                    constructor(parameters) {
-                        
-                    }
-                }>
-                    <hs>{card.title}</hs>
+                   
+                    <h3>{card.title}</h3>
                     <p>
                         {card.description}
                     </p>
